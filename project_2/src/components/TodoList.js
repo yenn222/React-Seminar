@@ -10,7 +10,7 @@ const TodoList = ({ todo, onUpdate, onDelete }) => {
     const getSearchResult = () => {
         return search === ""
             ? todo
-            : todo.filter((it) => it.content.includes(search.toLowerCase()));
+            : todo.filter((it) => it.content.toLowerCase().includes(search.toLocaleLowerCase()));
     };
     return(
         <div className="TodoList">
