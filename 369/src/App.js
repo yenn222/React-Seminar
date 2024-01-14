@@ -23,7 +23,7 @@ function App() {
                 <Body count = {count} />
             </section>
             <section>
-                <Controller handleSetCont = {handleSetCount} />
+                <Controller handleSetCount = {handleSetCount} />
             </section>
         </div>
     );

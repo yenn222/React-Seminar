@@ -1,10 +1,10 @@
 
-const Controller = ({ handleSetCont }) => {
+const Controller = ({ handleSetCount }) => {
     return (
         <div className="Viewer">
-            <button onClick = {() => handleSetCont(+1)}>+</button>
+            <button onClick = {() => handleSetCount(+1)}>+</button>
         </div>
-    );
+    )
 };
 
 
