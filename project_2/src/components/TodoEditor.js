@@ -1,7 +1,9 @@
 import "./TodoEditor.css";
-import {useRef, useState} from "react";
+import { useContext, useRef, useState} from "react";
+import {TodoDispatchContext} from "../App";
 
-const TodoEditor = ({ onCreate }) => {
+const TodoEditor = ({ mockTodo }) => {
+    const { onCreate } = useContext(TodoDispatchContext);
     const [content, setContent] = useState("");
     const inputRef = useRef();
     const onChangeContent = (e) => {
@@ -22,15 +24,14 @@ const TodoEditor = ({ onCreate }) => {
     }
     return (
         <div className="TodoEditor">
-            <h4>새로운 Todo 작성하기 ✏️</h4>
             <div className="editor_wrapper">
                 <input
-                    ref = {inputRef}
-                    value = {content}
+                    ref={inputRef}
+                    value={content}
                     onChange={onChangeContent}
                     onKeyDown={onKeyDown}
                     placeholder="새로운 Todo..."/>
-                <button onClick={onSubmit}>추가</button>
+                <button onClick={onSubmit}>+</button>
             </div>
         </div>
     );

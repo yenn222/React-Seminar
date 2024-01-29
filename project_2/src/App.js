@@ -2,8 +2,10 @@ import './App.css';
 import Header from "./components/Header";
 import TodoEditor from "./components/TodoEditor";
 import TodoList from "./components/TodoList";
-import {useRef, useState} from "react";
-
+import React, {useRef, useReducer, useCallback, useMemo} from "react";
+// import TestComp from "./components/TestComp";
+export const TodoStateContext = React.createContext();
+export const TodoDispatchContext = React.createContext();
 
 const mockTodo = [
     {
@@ -25,35 +27,77 @@ const mockTodo = [
         createdDate: new Date().getTime(),
     },
 ];
+
+function reducer(state, action){
+    switch (action.type) {
+        case "CREATE" : {
+            return [action.newItem, ...state];
+        }
+
+        case "UPDATE" : {
+            return state.map((it) =>
+            it.id === action.targetId
+            ? {
+                ...it,
+                isDone: !it.isDone,
+                }
+                :it
+            );
+        }
+
+        case "DELETE" :{
+            return state.filter((it) => it.id !== action.targetId);
+        }
+
+        default :{
+            return state;
+        }
+    }
+}
+
 function App() {
-    const [todo, setTodo] = useState(mockTodo);
+
+    const [todo, dispatch] = useReducer(reducer, mockTodo);
     const idRef = useRef(3);
     const onCreate = (content) => {
-        const newItem = {
-            id : idRef.current,
+        dispatch({
+            type: "CREATE",
+            newItem: {
+            id: idRef.current,
             content,
             isDone: false,
-            createdDate: new Date().getTime(),
-        };
-        setTodo([newItem, ...todo]);
+            createDate: new Date().getTime()}
+        });
         idRef.current += 1;
     };
 
-    const onUpdate = (targetId) => {
-        setTodo(
-            todo.map((it) =>
-                it.id === targetId ? {...it, isDone: !it.isDone} : it)
-    );
-};
-    const onDelete = (targetId) => {
-        setTodo(todo.filter((it) => it.id !== targetId));
-    };
+    const onUpdate = useCallback((targetId) => {
+        dispatch({
+            type: "UPDATE",
+            targetId,
+        });
+}, []);
+    const onDelete = useCallback((targetId) => {
+        dispatch({
+            type: "DELETE",
+            targetId,
+        });
+    }, []);
+
+    const memoizeDispatches = useMemo( () => {
+        return { onCreate, onUpdate, onDelete };
+    }, []);
 
     return (
         <div className="App">
+            {/*<TestComp/>*/}
             <Header />
-            <TodoEditor onCreate = {onCreate}/>
-            <TodoList todo = {todo} onUpdate = {onUpdate} onDelete={onDelete}/>
+            <TodoStateContext.Provider value={ todo }>
+                <TodoDispatchContext.Provider value={memoizeDispatches}>
+                    <TodoEditor />
+                    <TodoList />
+                </TodoDispatchContext.Provider>
+            </TodoStateContext.Provider>
         </div>
   );
 }

@@ -5,7 +5,7 @@
 }
 
 .TodoEditor input {
-    flex: 1;
+    flex:1;
     box-sizing: border-box;
     border: 1px solid rgb(220, 220, 220);
     border-radius: 5px;
@@ -19,9 +19,10 @@
 
 .TodoEditor button{
     cursor: pointer;
-    width: 80px;
+    width: 50px;
     border: none;
     background-color: #1f93ff;
     color: white;
-    border-radius: 5px;
+    border-radius: 50%;
+    font-size: x-large;
 }
