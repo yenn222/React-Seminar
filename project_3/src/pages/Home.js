@@ -1,9 +1,8 @@
-import { useSearchParams } from "react-router-dom";
-
+import Editor from "../components/Editor"
 const Home = () => {
-    const [searchParams, setSearchParams] = useSearchParams();
-    console.log(searchParams.get('sort'));
-    return <div>Home 페이지입니다.</div>
-}
+    return(
+        <div>Home 페이지입니다</div>
+    );
+};
 
 export default Home;
