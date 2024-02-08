@@ -72,3 +72,8 @@ export const emotionList = [
         img: getEmotionImgById(5),
     },
 ];
+
+export const setPageTitle = (title) => {
+    const titleElement = document.getElementsByTagName("title")[0];
+    titleElement.innerText = title;
+};
